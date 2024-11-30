@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystery Box Animal Game - Multiple Levels</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <h1>Mystery Box Animal Game</h1>
+        <div id="level-buttons">
+            <button id="easy">Easy</button>
+            <button id="medium">Medium</button>
+            <button id="hard">Hard</button>
+        </div>
+        <p id="score">Score: 0</p>
+        <p id="attempts">Attempts left: 3</p>
+        <div id="boxes"></div>
+        <p id="message"></p>
+        <button id="next-question" style="display: none;">Next Question</button>
+    </div>
+
+    <script>
+        const apiUrl = 'https://marcconrad.com/uob/banana/api.php';
+        const animals = ['Lion', 'Elephant', 'Giraffe', 'Monkey', 'Penguin', 'Kangaroo', 'Zebra', 'Koala', 'Tiger', 'Panda'];
+        let currentAnimal, score = 0, attempts, currentLevel = 'easy';
+
+        const levels = {
+            easy: { boxes: 6, attempts: 3, cols: 3 },
+            medium: { boxes: 9, attempts: 3, cols: 3 },
+            hard: { boxes: 12, attempts: 2, cols: 4 }
+        };
+
+        const boxesContainer = document.getElementById('boxes');
+        const scoreDisplay = document.getElementById('score');
+        const attemptsDisplay = document.getElementById('attempts');
+        const messageDisplay = document.getElementById('message');
+        const nextButton = document.getElementById('next-question');
+        const levelButtons = document.querySelectorAll('#level-buttons button');
+
+        levelButtons.forEach(button => {
+            button.addEventListener('click', () => setLevel(button.id));
+        });
+
+        function setLevel(level) {
+            currentLevel = level;
+            levelButtons.forEach(btn => btn.classList.remove('active-level'));
+            document.getElementById(level).classList.add('active-level');
+            fetchQuestion();
+        }
+
+        function createBoxes() {
+            boxesContainer.innerHTML = '';
+            boxesContainer.style.gridTemplateColumns = `repeat(${levels[currentLevel].cols}, 1fr)`;
+            for (let i = 0; i < levels[currentLevel].boxes; i++) {
+                const box = document.createElement('button');
+                box.className = 'box';
+                box.textContent = i + 1;
+                box.addEventListener('click', () => openBox(i));
+                boxesContainer.appendChild(box);
+            }
+        }
+
+        function fetchQuestion() {
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    currentAnimal = animals[data.solution % animals.length];
+                    attempts = levels[currentLevel].attempts;
+                    updateDisplay();
+                    createBoxes();
+                    messageDisplay.textContent = '';
+                    nextButton.style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Error fetching question:', error);
+                });
+        }
+
+        function openBox(index) {
+            if (attempts === 0) return;
+            
+            const box = boxesContainer.children[index];
+            if (index === animals.indexOf(currentAnimal) % levels[currentLevel].boxes) {
+                box.classList.add('correct');
+                box.textContent = '🐾';
+                score++;
+                messageDisplay.textContent = `Congratulations! You found the ${currentAnimal}!`;
+                endRound();
+            } else {
+                box.classList.add('incorrect');
+                box.textContent = '❌';
+                attempts--;
+                if (attempts === 0) {
+                    messageDisplay.textContent = `Sorry, you've used all your attempts. The animal was a ${currentAnimal}.`;
+                    endRound();
+                }
+            }
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            scoreDisplay.textContent = `Score: ${score}`;
+            attemptsDisplay.textContent = `Attempts left: ${attempts}`;
+        }
+
+        function endRound() {
+            boxesContainer.querySelectorAll('.box').forEach(box => box.disabled = true);
+            nextButton.style.display = 'inline-block';
+        }
+
+        nextButton.addEventListener('click', fetchQuestion);
+
+        // Start the game
+        setLevel('easy');
+    </script>
+</body>
+</html>

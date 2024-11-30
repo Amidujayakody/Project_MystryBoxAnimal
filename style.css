@@ -1,0 +1,68 @@
+body {
+    background-image: url('animals.jpg');
+    background-size:contain;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+#game-container {
+    text-align: center;
+    background-color:chocolate ;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    max-width: 600px;
+    width: 100%;
+}
+#boxes {
+    display: grid;
+    gap: 10px;
+    margin-top: 20px;
+    margin-left: 70px;
+    justify-content: center;
+}
+.box {   
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #ddd;
+}
+.box:hover {
+    background-color: #ccc;
+}
+.box.correct {
+    background-color: #4CAF50;
+    color: white;
+}
+.box.incorrect {
+    background-color: #f44336;
+    color: white;
+}
+#message {
+    margin-top: 20px;
+    font-weight: bold;
+}
+button {
+    margin: 10px;
+    font-size: 18px;
+    padding: 10px 20px;
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+#level-buttons {
+    margin-bottom: 20px;
+}
+.active-level {
+    background-color: #4CAF50;
+}
