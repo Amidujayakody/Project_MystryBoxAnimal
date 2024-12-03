@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+    <style>
+        body {
+            background-image: url('animals.jpg');
+            font-family: Arial, sans-serif;
+            color: #ddd;
+            font-weight: bold;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 50%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            border-style: double;
+        }
+
+        table, th, td {
+            border: 2px solid #ddd;
+        }
+
+        th, td {
+            padding: 8px 12px;
+            text-align: center;
+            background-color: darkgreen;
+        }
+
+        th {
+            background-color: #040804;
+            color: white;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Leaderboard</h1>
+    <div id="error-message" class="error"></div>
+    <table id="leaderboard-table">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Player Name</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Leaderboard rows will be inserted here dynamically -->
+        </tbody>
+    </table>
+
+    <script>
+
+window.onload = function() {
+    console.log("Leaderboard page loaded");
+
+    fetchLeaderboard();
+};
+
+        // Fetch leaderboard data from PHP backend
+        async function fetchLeaderboard() {
+    try {
+        const response = await fetch('get_data.php', {
+            method: 'GET',
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch leaderboard data');
+        }
+
+        // Log response for debugging
+        const textResponse = await response.text();
+        console.log('Raw response:', textResponse);
+
+        const leaderboard = JSON.parse(textResponse); // Parsing manually for debugging
+
+        const tableBody = document.querySelector('#leaderboard-table tbody');
+        tableBody.innerHTML = ''; // Clear existing data
+
+        if (leaderboard.error) {
+            document.getElementById('error-message').textContent = leaderboard.error;
+            return;
+        }
+
+        leaderboard.forEach((player, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${index + 1}</td>
+                <td>${player.name}</td>
+                <td>${player.score}</td>
+            `;
+            tableBody.appendChild(row);
+        });
+    } catch (error) {
+        document.getElementById('error-message').textContent = 'Error loading leaderboard: ' + error.message;
+    }
+}
+
+        // Load the leaderboard data when the page loads
+        window.onload = fetchLeaderboard;
+    </script>
+    
+</body>
+</html>
