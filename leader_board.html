@@ -60,7 +60,7 @@
             </tr>
         </thead>
         <tbody>
-            <!-- Leaderboard rows will be inserted here dynamically -->
+          
         </tbody>
     </table>
 
@@ -72,7 +72,7 @@ window.onload = function() {
     fetchLeaderboard();
 };
 
-        // Fetch leaderboard data from PHP backend
+        
         async function fetchLeaderboard() {
     try {
         const response = await fetch('get_data.php', {
@@ -111,7 +111,7 @@ window.onload = function() {
     }
 }
 
-        // Load the leaderboard data when the page loads
+       
         window.onload = fetchLeaderboard;
     </script>
     
