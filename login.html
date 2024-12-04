@@ -13,6 +13,7 @@
         form {
             display: inline-block;
             text-align: left;
+            margin-bottom: 20px;
         }
         input {
             margin: 10px 0;
@@ -25,6 +26,14 @@
             background-color: #007BFF;
             color: white;
             border: none;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        button.secondary-button {
+            background-color: #6c757d; /* Gray for secondary button */
+        }
+        button:hover {
+            opacity: 0.9;
         }
     </style>
 </head>
@@ -32,18 +41,27 @@
     <h1>Welcome to the Game</h1>
     <form id="login-form">
         <input type="text" id="player-name" placeholder="Enter your name" required>
+        <input type="password" id="player-password" placeholder="Enter your password" required>
         <button type="submit">Start Game</button>
     </form>
+    
+    <!-- Button to navigate to the leaderboard -->
+    <button onclick="window.location.href='leader_board.html'">Go to Leaderboard</button>
+
 
     <script>
-        document.getElementById('login-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const playerName = document.getElementById('player-name').value;
-            if (playerName) {
-                localStorage.setItem('playerName', playerName); // Save the name
-                window.location.href = 'game.html'; // Redirect to the game
-            }
-        });
+    document.getElementById('login-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const playerName = document.getElementById('player-name').value;
+    const playerPassword = document.getElementById('player-password').value;
+
+    if (playerName && playerPassword) {
+        localStorage.setItem('playerName', playerName); // Save name
+        localStorage.setItem('playerPassword', playerPassword); // Save password
+        window.location.href = 'game.html'; // Redirect to game
+    }
+    });
+
     </script>
 </body>
 </html>
