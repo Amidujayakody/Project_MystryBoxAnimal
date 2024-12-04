@@ -1,8 +1,8 @@
 const playerName = localStorage.getItem('playerName');
-const playerPassword = localStorage.getItem('playerPassword'); // Retrieve password
+const playerPassword = localStorage.getItem('playerPassword'); 
 
 if (!playerName || !playerPassword) {
-    // Redirect to login if any data is missing
+    
     window.location.href = 'login.html';
 }
 
@@ -245,8 +245,9 @@ function showCongratulationsPopup() {
     })
     .catch(error => console.error('Error saving player data:', error));
 }*/
+
 function savePlayerData(playerName, score) {
-    const playerPassword = localStorage.getItem('playerPassword'); // Retrieve password
+    const playerPassword = localStorage.getItem('playerPassword'); 
 
     fetch('save_data.php', {
         method: 'POST',
@@ -257,7 +258,7 @@ function savePlayerData(playerName, score) {
     })
     .then(response => response.text())
     .then(data => {
-        console.log(data); // Check backend response
+        console.log(data); 
     })
     .catch(error => console.error('Error saving player data:', error));
 }
