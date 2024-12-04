@@ -1,5 +1,8 @@
 const playerName = localStorage.getItem('playerName');
-if (!playerName) {
+const playerPassword = localStorage.getItem('playerPassword'); // Retrieve password
+
+if (!playerName || !playerPassword) {
+    // Redirect to login if any data is missing
     window.location.href = 'login.html';
 }
 
@@ -228,19 +231,36 @@ function showCongratulationsPopup() {
 }
 
 
-function savePlayerData(playerName, score) {
+/*function savePlayerData(playerName, score,playerPassword) {
     fetch('save_data.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: `name=${playerName}&score=${score}`
+        body: `name=${playerName}&score=${score}&password=${playerPassword}`
     })
     .then(response => response.text())
     .then(data => {
         console.log(data);  
     })
     .catch(error => console.error('Error saving player data:', error));
+}*/
+function savePlayerData(playerName, score) {
+    const playerPassword = localStorage.getItem('playerPassword'); // Retrieve password
+
+    fetch('save_data.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `name=${encodeURIComponent(playerName)}&score=${score}&password=${encodeURIComponent(playerPassword)}`
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log(data); // Check backend response
+    })
+    .catch(error => console.error('Error saving player data:', error));
 }
+
 
 setLevel('easy')
