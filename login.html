@@ -30,7 +30,7 @@
             margin: 10px 0;
         }
         button.secondary-button {
-            background-color: #6c757d; /* Gray for secondary button */
+            background-color: #6c757d; 
         }
         button:hover {
             opacity: 0.9;
@@ -56,9 +56,9 @@
     const playerPassword = document.getElementById('player-password').value;
 
     if (playerName && playerPassword) {
-        localStorage.setItem('playerName', playerName); // Save name
-        localStorage.setItem('playerPassword', playerPassword); // Save password
-        window.location.href = 'game.html'; // Redirect to game
+        localStorage.setItem('playerName', playerName); 
+        localStorage.setItem('playerPassword', playerPassword); 
+        window.location.href = 'game.html'; 
     }
     });
 
